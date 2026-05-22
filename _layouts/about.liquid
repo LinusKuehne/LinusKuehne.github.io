@@ -76,5 +76,18 @@ layout: default
     {% if site.newsletter and site.newsletter.enabled and site.footer_fixed %}
       {% include newsletter.liquid center=true %}
     {% endif %}
+
+    <!-- Bottom image -->
+    {% if page.image_bottom %}
+      {% assign bottom_image_path = page.image_bottom | prepend: 'assets/img/' %}
+      <div class="bottom-image mt-4">
+        {%
+          include figure.liquid
+          path=bottom_image_path
+          class="img-fluid rounded z-depth-1"
+          alt=page.image_bottom
+        %}
+      </div>
+    {% endif %}
   </article>
 </div>
