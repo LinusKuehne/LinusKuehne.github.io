@@ -21,7 +21,7 @@ ninja.data = [{
           description: "",
           section: "Navigation",
           handler: () => {
-            window.location.href = "/https:/www.linkedin.com/in/linuskuehne/";
+            window.location.href = "/cv/";
           },
         },{id: "post-a-post-with-plotly-js",
         
