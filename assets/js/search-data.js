@@ -23,6 +23,13 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
+        },{id: "nav-hiking",
+          title: "hiking",
+          description: "I like to spend time in nature. Here is a collection of hikes I have done, with routes, photos, and further information.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/hiking/";
+          },
         },{id: "post-a-post-with-plotly-js",
         
           title: "a post with plotly.js",
@@ -391,6 +398,11 @@ ninja.data = [{
           description: "",
           section: "Books",handler: () => {
               window.location.href = "/books/the_godfather/";
+            },},{id: "hikes-sattel-goldau",
+          title: 'Sattel Goldau',
+          description: "",
+          section: "Hikes",handler: () => {
+              window.location.href = "/hikes/sattel-goldau/";
             },},{id: "news-a-simple-inline-announcement",
           title: 'A simple inline announcement.',
           description: "",
