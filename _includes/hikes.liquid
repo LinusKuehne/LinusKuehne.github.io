@@ -1,0 +1,89 @@
+<!-- Switzerland / hikes overview map -->
+<div id="hikes-overview-map" class="hikes-overview-map"></div>
+<p class="hikes-hint">
+  <i class="fa-solid fa-hand-pointer"></i>
+  Click a marker on the map to jump to that hike.
+</p>
+
+{% assign sorted_hikes = site.hikes | sort: "date" | reverse %}
+
+<h2 class="hikes-section-title">Hikes (chronological)</h2>
+
+<div class="hikes-list">
+  {% for hike in sorted_hikes %}
+    {% assign slug = hike.slug %}
+    {% assign gpx_path = '/assets/hikes/' | append: slug | append: '/route.gpx' %}
+    {% assign photo_prefix = '/assets/img/hikes/' | append: slug | append: '/' %}
+    {% assign all_static = site.static_files | where_exp: "f", "f.path contains photo_prefix" %}
+    {% assign photos = all_static | where_exp: "f", "f.extname == '.jpg' or f.extname == '.jpeg' or f.extname == '.png'" | sort: "path" %}
+
+    <article
+      class="hike-entry"
+      id="hike-{{ slug }}"
+      data-slug="{{ slug }}"
+      data-name="{{ hike.name | escape }}"
+      data-gpx="{{ gpx_path | relative_url }}"
+    >
+      <div class="hike-map" aria-label="Route map for {{ hike.name | escape }}"></div>
+
+      <div class="hike-cover">
+        {% if photos.size > 0 %}
+          <a
+            href="{{ photos[0].path | relative_url }}"
+            data-lightbox="hike-{{ slug }}"
+            data-title="{{ hike.name | escape }}"
+            class="hike-cover-link"
+          >
+            <img
+              src="{{ photos[0].path | relative_url }}"
+              alt="{{ hike.name | escape }}"
+              loading="lazy"
+            />
+          </a>
+          {% for p in photos offset: 1 %}
+            <a
+              href="{{ p.path | relative_url }}"
+              data-lightbox="hike-{{ slug }}"
+              data-title="{{ hike.name | escape }}"
+              class="hike-cover-extra"
+            ></a>
+          {% endfor %}
+        {% endif %}
+      </div>
+
+      <div class="hike-info">
+        <h3 class="hike-name">{{ hike.name }}</h3>
+        <dl class="hike-meta">
+          <dt>Date</dt><dd>{{ hike.date | date: "%Y-%m-%d" }}</dd>
+          <dt>Distance</dt><dd>{{ hike.total_distance }} km</dd>
+          <dt>Ascent</dt><dd>{{ hike.vertical_distance }} m</dd>
+          <dt>Difficulty</dt><dd>{{ hike.technical_difficulty }}</dd>
+          <dt>Rating</dt>
+          <dd class="hike-rating" aria-label="{{ hike.rating }} out of 5">
+            {% assign r = hike.rating | plus: 0 %}
+            {% for i in (1..5) %}{% if i <= r %}★{% else %}☆{% endif %}{% endfor %}
+          </dd>
+        </dl>
+        <a class="hike-gpx-download" href="{{ gpx_path | relative_url }}" download>
+          <i class="fa-solid fa-download"></i> Download GPX
+        </a>
+        {% if hike.comment and hike.comment != "" %}
+          <div class="hike-comment">{{ hike.comment | markdownify }}</div>
+        {% endif %}
+      </div>
+    </article>
+  {% endfor %}
+</div>
+
+<!-- Data island consumed by assets/js/hikes.js -->
+<script id="hikes-data" type="application/json">
+[
+  {% for hike in sorted_hikes %}
+    {
+      "slug": {{ hike.slug | jsonify }},
+      "name": {{ hike.name | jsonify }},
+      "gpx": {{ '/assets/hikes/' | append: hike.slug | append: '/route.gpx' | relative_url | jsonify }}
+    }{% unless forloop.last %},{% endunless %}
+  {% endfor %}
+]
+</script>

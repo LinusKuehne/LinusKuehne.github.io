@@ -24,6 +24,41 @@ To preview the site locally before deploying:
 
 Tip: enable Docker Desktop → Settings → General → "Start Docker Desktop when you sign in to your computer" to skip step 1 in the future.
 
+## Adding a new hike
+
+1. From the repo root, run:
+
+   ```bash
+   python add_new_hike.py
+   ```
+
+   The script prompts for the name, date, vertical distance (m), total distance (km), technical difficulty (Swiss T-scale, e.g. `T2`), rating (1–5), and an optional free-text comment. Press enter to skip the comment.
+
+2. It creates three things:
+   - `_hikes/<slug>.md` — the metadata as YAML frontmatter. You can hand-edit this later to fix typos, change the rating, or write a longer comment.
+   - `assets/hikes/<slug>/` — empty folder for the GPX file.
+   - `assets/img/hikes/<slug>/` — empty folder for the photos.
+
+   The slug is derived from the name (e.g. `Sattel → Goldau` → `sattel-goldau`).
+
+3. **Drop your GPX file** into `assets/hikes/<slug>/` and rename it to `route.gpx`.
+
+4. **Drop your photos** (JPG or PNG) into `assets/img/hikes/<slug>/`. There is no required naming — photos are picked up automatically and **sorted alphabetically by filename**:
+   - The first one alphabetically becomes the cover photo on the card.
+   - Clicking the cover opens a lightbox that cycles through all of them in the same order.
+   - Easiest convention is `01.jpg`, `02.jpg`, `03.jpg`, ... so you can control the order at a glance. Original camera names like `PXL_20260525_092237652.jpg` also work — they happen to sort by timestamp, which is usually the order you took them.
+
+5. Reload http://localhost:8080/hiking/ — Jekyll auto-rebuilds and the new hike appears (sorted into the chronological list by date, and as a new clickable marker on the overview map).
+
+Multi-line / formatted comments: edit `_hikes/<slug>.md` directly and use a YAML block scalar:
+
+```yaml
+comment: |
+  First paragraph of trip notes.
+
+  Second paragraph — supports **markdown**.
+```
+
 <div align="center">
 
 [![Preview](readme_preview/al-folio-preview.png)](https://alshedivat.github.io/al-folio/)
