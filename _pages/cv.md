@@ -2,6 +2,7 @@
 title: cv
 nav: true
 nav_order: 2
-permalink: https://www.linkedin.com/in/linuskuehne/
+permalink: /cv/
+external_url: /assets/pdf/cv.pdf
 sitemap: false
 ---

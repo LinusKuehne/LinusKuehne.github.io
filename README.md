@@ -1,5 +1,29 @@
 # al-folio
 
+## Local preview
+
+To preview the site locally before deploying:
+
+1. **Start Docker Desktop** (the daemon must be running before the CLI works). Either launch `/Applications/Docker.app` from Finder/Spotlight, or run:
+
+   ```bash
+   open -a Docker
+   ```
+
+   Wait until the whale icon in the menu bar stops animating ("Docker Desktop is running").
+
+2. **Start the site** from the project directory:
+
+   ```bash
+   docker compose pull && docker compose up
+   ```
+
+3. **Open** http://localhost:8080 in your browser.
+
+4. **Stop the site** with `Ctrl+C` in the terminal. Docker Desktop itself keeps running in the background; quit it from the menu bar whale icon → "Quit Docker Desktop" to free its resources.
+
+Tip: enable Docker Desktop → Settings → General → "Start Docker Desktop when you sign in to your computer" to skip step 1 in the future.
+
 <div align="center">
 
 [![Preview](readme_preview/al-folio-preview.png)](https://alshedivat.github.io/al-folio/)
