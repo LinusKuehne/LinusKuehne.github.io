@@ -312,6 +312,7 @@ Run the test yourself: [Google Lighthouse PageSpeed Insights](https://pagespeed.
 
 - [al-folio](#al-folio)
   - [Local preview](#local-preview)
+  - [Adding a new hike](#adding-a-new-hike)
   - [User community](#user-community)
   - [Lighthouse PageSpeed Insights](#lighthouse-pagespeed-insights)
     - [Desktop](#desktop)
