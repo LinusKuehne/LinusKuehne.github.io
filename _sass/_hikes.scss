@@ -1,0 +1,190 @@
+/*****************************
+ * Hikes page styles
+ *****************************/
+
+.hikes-overview-map {
+  width: 100%;
+  height: 420px;
+  margin-bottom: 10px;
+  border: 1px solid var(--global-divider-color);
+  border-radius: 6px;
+  background-color: var(--global-bg-color);
+  z-index: 0;
+}
+
+.hikes-hint {
+  margin: 0 0 50px 0;
+  font-size: 0.9rem;
+  color: var(--global-text-color);
+  text-align: center;
+
+  i {
+    margin-right: 6px;
+  }
+}
+
+.hike-comment {
+  width: 100%;
+  margin-top: 8px;
+  font-size: 0.95rem;
+  color: var(--global-text-color);
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.hikes-section-title {
+  margin: 0 0 20px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--global-divider-color);
+  font-size: 1.4rem;
+  font-weight: 400;
+}
+
+.hikes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* Drop-shadow makes overview markers pop against the busy Swisstopo basemap. */
+.hike-overview-marker {
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.55));
+  cursor: pointer;
+}
+
+.hike-entry {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid var(--global-divider-color);
+  border-radius: 6px;
+  background-color: var(--global-bg-color);
+  scroll-margin-top: 80px;
+  transition:
+    transform 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+
+  &:target {
+    box-shadow: 0 0 0 2px var(--global-theme-color);
+  }
+}
+
+@media (min-width: 768px) {
+  .hike-entry {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "map cover"
+      "info info";
+  }
+
+  .hike-map {
+    grid-area: map;
+  }
+
+  .hike-cover {
+    grid-area: cover;
+  }
+
+  .hike-info {
+    grid-area: info;
+  }
+}
+
+.hike-map {
+  width: 100%;
+  height: 240px;
+  border-radius: 4px;
+  background-color: var(--global-bg-color);
+  z-index: 0;
+}
+
+.hike-cover {
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+  border-radius: 4px;
+
+  .hike-cover-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: zoom-in;
+    transition: transform 0.2s ease-in-out;
+
+    &:hover {
+      transform: scale(1.03);
+    }
+  }
+
+  .hike-cover-extra {
+    display: none;
+  }
+}
+
+.hike-info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 12px 24px;
+}
+
+.hike-name {
+  width: 100%;
+  margin: 0 0 4px 0;
+  font-size: 1.3rem;
+}
+
+.hike-meta {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 10px;
+  row-gap: 4px;
+  margin: 0;
+  font-size: 0.92rem;
+
+  dt {
+    font-weight: 600;
+    color: var(--global-text-color-light);
+  }
+
+  dd {
+    margin: 0;
+  }
+}
+
+.hike-rating {
+  letter-spacing: 1px;
+  color: var(--global-theme-color);
+}
+
+.hike-gpx-download {
+  margin-left: auto;
+  align-self: center;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  text-decoration: none;
+  padding: 6px 12px;
+  border: 1px solid var(--global-divider-color);
+  border-radius: 4px;
+  color: var(--global-text-color);
+
+  &:hover {
+    background-color: var(--global-hover-color);
+    color: var(--global-theme-color);
+  }
+}
+
+/* Leaflet popups should respect site colors in dark mode */
+.leaflet-popup-content a {
+  color: var(--global-theme-color);
+  font-weight: 600;
+}
