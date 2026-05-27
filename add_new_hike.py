@@ -105,6 +105,7 @@ def write_markdown(path: Path, fields: dict) -> None:
     lines.append(f"name: {yaml_quote(fields['name'])}")
     lines.append(f"date: {yaml_quote(fields['date'])}")
     lines.append(f"vertical_distance: {fields['vertical_distance']}")
+    lines.append(f"descent: {fields['descent']}")
     lines.append(f"total_distance: {fields['total_distance']}")
     lines.append(f"technical_difficulty: {yaml_quote(fields['technical_difficulty'])}")
     lines.append(f"start: {yaml_quote(fields['start'])}")
@@ -140,6 +141,7 @@ def main() -> int:
     today = datetime.now().strftime("%Y-%m-%d")
     date = prompt("Date (YYYY-MM-DD)", validator=parse_date, default=today)
     vertical = prompt("Vertical distance (m, ascent)", validator=parse_int)
+    descent = prompt("Descent (m)", validator=parse_int)
     total = prompt("Total distance (km)", validator=parse_float)
     difficulty = prompt(
         "Technical difficulty (e.g. T1, T2, T3, T4, T5, T6)", default="T2"
@@ -156,6 +158,7 @@ def main() -> int:
         "name": name,
         "date": date,
         "vertical_distance": vertical,
+        "descent": descent,
         "total_distance": total,
         "technical_difficulty": difficulty,
         "start": start,

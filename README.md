@@ -32,7 +32,7 @@ Tip: enable Docker Desktop → Settings → General → "Start Docker Desktop wh
    python add_new_hike.py
    ```
 
-   The script prompts for the name, date, vertical distance (m), total distance (km), technical difficulty (Swiss T-scale, e.g. `T2`), start and end (free text — village / station / trailhead names), rating (1–5, half steps allowed — e.g. `3.5`), and an optional free-text comment. Press enter to skip the comment.
+   The script prompts for the name, date, vertical distance (m, ascent), descent (m), total distance (km), technical difficulty (Swiss T-scale, e.g. `T2`), start and end (free text — village / station / trailhead names), rating (1–5, half steps allowed — e.g. `3.5`), and an optional free-text comment. Press enter to skip the comment.
 
 2. It creates three things:
    - `_hikes/<slug>.md` — the metadata as YAML frontmatter. You can hand-edit this later to fix typos, change the rating, or write a longer comment.
