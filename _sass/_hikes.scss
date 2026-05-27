@@ -167,6 +167,11 @@
 .hike-rating {
   --rating-pct: 0%;
   display: inline-block;
+  /* The <dd> is a grid item in .hike-meta, so without max-content it would
+     stretch to the full 1fr column. The absolute ::after's width:N% then
+     resolves to N% of the column (always wider than the stars) instead of
+     N% of the star bar, and the overlay covers all 5 stars regardless. */
+  width: max-content;
   position: relative;
   font-size: 1.1em;
   line-height: 1;
