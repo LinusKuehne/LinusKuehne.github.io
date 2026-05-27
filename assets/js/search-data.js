@@ -398,6 +398,11 @@ ninja.data = [{
           description: "",
           section: "Books",handler: () => {
               window.location.href = "/books/the_godfather/";
+            },},{id: "hikes-monte-boglia",
+          title: 'Monte Boglia',
+          description: "",
+          section: "Hikes",handler: () => {
+              window.location.href = "/hikes/monte-boglia/";
             },},{id: "hikes-sattel-goldau",
           title: 'Sattel Goldau',
           description: "",
