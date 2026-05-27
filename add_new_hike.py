@@ -80,11 +80,20 @@ def parse_float(raw: str) -> float:
         raise ValueError("expected a number")
 
 
-def parse_rating(raw: str) -> int:
-    n = parse_int(raw)
+def parse_rating(raw: str) -> float:
+    try:
+        n = float(raw)
+    except ValueError:
+        raise ValueError("expected a number")
     if not 1 <= n <= 5:
         raise ValueError("rating must be between 1 and 5")
+    if (n * 2) != int(n * 2):
+        raise ValueError("rating must be in 0.5 increments (e.g. 3, 3.5, 4)")
     return n
+
+
+def format_rating(n: float) -> str:
+    return str(int(n)) if n == int(n) else str(n)
 
 
 def yaml_quote(value: str) -> str:
@@ -98,7 +107,9 @@ def write_markdown(path: Path, fields: dict) -> None:
     lines.append(f"vertical_distance: {fields['vertical_distance']}")
     lines.append(f"total_distance: {fields['total_distance']}")
     lines.append(f"technical_difficulty: {yaml_quote(fields['technical_difficulty'])}")
-    lines.append(f"rating: {fields['rating']}")
+    lines.append(f"start: {yaml_quote(fields['start'])}")
+    lines.append(f"end: {yaml_quote(fields['end'])}")
+    lines.append(f"rating: {format_rating(fields['rating'])}")
     if fields.get("comment"):
         lines.append(f"comment: {yaml_quote(fields['comment'])}")
     lines.append("---")
@@ -133,7 +144,9 @@ def main() -> int:
     difficulty = prompt(
         "Technical difficulty (e.g. T1, T2, T3, T4, T5, T6)", default="T2"
     )
-    rating = prompt("Rating (1-5)", validator=parse_rating)
+    start = prompt("Start (free text, e.g. 'Sattel-Aegeri (SZ)')")
+    end = prompt("End   (free text, e.g. 'Goldau (SZ)')")
+    rating = prompt("Rating (1-5, half steps OK e.g. 3.5)", validator=parse_rating)
     comment = prompt(
         "Comment (free text, leave blank to skip; edit the .md later for more)",
         allow_empty=True,
@@ -145,6 +158,8 @@ def main() -> int:
         "vertical_distance": vertical,
         "total_distance": total,
         "technical_difficulty": difficulty,
+        "start": start,
+        "end": end,
         "rating": rating,
         "comment": comment,
     }

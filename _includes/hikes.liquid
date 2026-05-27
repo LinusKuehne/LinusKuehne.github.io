@@ -58,11 +58,14 @@
           <dt>Distance</dt><dd>{{ hike.total_distance }} km</dd>
           <dt>Ascent</dt><dd>{{ hike.vertical_distance }} m</dd>
           <dt>Difficulty</dt><dd>{{ hike.technical_difficulty }}</dd>
+          {% if hike.start %}<dt>Start</dt><dd>{{ hike.start }}</dd>{% endif %}
+          {% if hike.end %}<dt>End</dt><dd>{{ hike.end }}</dd>{% endif %}
           <dt>Rating</dt>
-          <dd class="hike-rating" aria-label="{{ hike.rating }} out of 5">
-            {% assign r = hike.rating | plus: 0 %}
-            {% for i in (1..5) %}{% if i <= r %}★{% else %}☆{% endif %}{% endfor %}
-          </dd>
+          <dd
+            class="hike-rating"
+            aria-label="{{ hike.rating }} out of 5"
+            style="--rating-pct: {{ hike.rating | times: 20 }}%;"
+          ></dd>
         </dl>
         <a class="hike-gpx-download" href="{{ gpx_path | relative_url }}" download>
           <i class="fa-solid fa-download"></i> Download GPX
@@ -74,6 +77,14 @@
     </article>
   {% endfor %}
 </div>
+
+<p class="hikes-disclaimer">
+  These pages are a personal logbook. Routes, distances, difficulty ratings, and
+  conditions reflect a single trip on a single day; they are not a guide. Verify
+  conditions, your own fitness and equipment, and follow official signage. I take
+  no responsibility for accidents or for any inaccuracy in the information shown
+  here.
+</p>
 
 <!-- Data island consumed by assets/js/hikes.js -->
 <script id="hikes-data" type="application/json">

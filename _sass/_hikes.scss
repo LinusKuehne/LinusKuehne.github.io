@@ -161,9 +161,31 @@
   }
 }
 
+/* Two-layer star bar: a gray "★★★★★" baseline, with a colored "★★★★★"
+   overlay clipped to --rating-pct (set inline on the element via Liquid).
+   Works for any 0.5 increment (or anything else) without per-value branching. */
 .hike-rating {
-  letter-spacing: 1px;
-  color: var(--global-theme-color);
+  --rating-pct: 0%;
+  display: inline-block;
+  position: relative;
+  font-size: 1.1em;
+  line-height: 1;
+
+  &::before {
+    content: "★★★★★";
+    color: var(--global-divider-color);
+  }
+
+  &::after {
+    content: "★★★★★";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--rating-pct);
+    overflow: hidden;
+    white-space: nowrap;
+    color: var(--global-theme-color);
+  }
 }
 
 .hike-gpx-download {
@@ -187,4 +209,14 @@
 .leaflet-popup-content a {
   color: var(--global-theme-color);
   font-weight: 600;
+}
+
+.hikes-disclaimer {
+  margin: 40px 0 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--global-divider-color);
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--global-text-color-light);
+  text-align: center;
 }
