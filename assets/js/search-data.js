@@ -398,6 +398,36 @@ ninja.data = [{
           description: "",
           section: "Books",handler: () => {
               window.location.href = "/books/the_godfather/";
+            },},{id: "hikes-wissberg",
+          title: 'Wissberg',
+          description: "",
+          section: "Hikes",handler: () => {
+              window.location.href = "/hikes/wissberg/";
+            },},{id: "hikes-quinten",
+          title: 'Quinten',
+          description: "",
+          section: "Hikes",handler: () => {
+              window.location.href = "/hikes/quinten/";
+            },},{id: "hikes-speer",
+          title: 'Speer',
+          description: "",
+          section: "Hikes",handler: () => {
+              window.location.href = "/hikes/speer/";
+            },},{id: "hikes-druesberg",
+          title: 'Druesberg',
+          description: "",
+          section: "Hikes",handler: () => {
+              window.location.href = "/hikes/druesberg/";
+            },},{id: "hikes-frumsel-brisi",
+          title: 'Frumsel Brisi',
+          description: "",
+          section: "Hikes",handler: () => {
+              window.location.href = "/hikes/frumsel-brisi/";
+            },},{id: "hikes-monte-leone",
+          title: 'Monte Leone',
+          description: "",
+          section: "Hikes",handler: () => {
+              window.location.href = "/hikes/monte-leone/";
             },},{id: "hikes-monte-boglia",
           title: 'Monte Boglia',
           description: "",
@@ -408,6 +438,11 @@ ninja.data = [{
           description: "",
           section: "Hikes",handler: () => {
               window.location.href = "/hikes/sattel-goldau/";
+            },},{id: "hikes-rageflueli-and-huenerhubel",
+          title: 'Rageflueli And Huenerhubel',
+          description: "",
+          section: "Hikes",handler: () => {
+              window.location.href = "/hikes/rageflueli-and-huenerhubel/";
             },},{id: "news-a-simple-inline-announcement",
           title: 'A simple inline announcement.',
           description: "",
