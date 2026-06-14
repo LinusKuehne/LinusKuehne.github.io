@@ -443,6 +443,11 @@ ninja.data = [{
           description: "",
           section: "Hikes",handler: () => {
               window.location.href = "/hikes/rageflueli-and-huenerhubel/";
+            },},{id: "hikes-rophaien",
+          title: 'Rophaien',
+          description: "",
+          section: "Hikes",handler: () => {
+              window.location.href = "/hikes/rophaien/";
             },},{id: "news-a-simple-inline-announcement",
           title: 'A simple inline announcement.',
           description: "",
