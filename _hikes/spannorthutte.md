@@ -7,6 +7,6 @@ total_distance: 15.6
 technical_difficulty: "T4"
 start: "Fürenalp (Bergstation)"
 end: "Fürenalp (Talstation)"
-rating: 3
+rating: 2.5
 comment: "Lots of loose rocks and gravel between Stäuber and Spannorthütte."
 ---
