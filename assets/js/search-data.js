@@ -448,6 +448,16 @@ ninja.data = [{
           description: "",
           section: "Hikes",handler: () => {
               window.location.href = "/hikes/rophaien/";
+            },},{id: "hikes-spannorthutte",
+          title: 'Spannorthutte',
+          description: "",
+          section: "Hikes",handler: () => {
+              window.location.href = "/hikes/spannorthutte/";
+            },},{id: "hikes-engelberger-lucke-rotstock",
+          title: 'Engelberger Lucke Rotstock',
+          description: "",
+          section: "Hikes",handler: () => {
+              window.location.href = "/hikes/engelberger-lucke-rotstock/";
             },},{id: "news-a-simple-inline-announcement",
           title: 'A simple inline announcement.',
           description: "",
