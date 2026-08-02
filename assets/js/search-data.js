@@ -398,6 +398,11 @@ ninja.data = [{
           description: "",
           section: "Books",handler: () => {
               window.location.href = "/books/the_godfather/";
+            },},{id: "hikes-salbitschijenbiwak",
+          title: 'Salbitschijenbiwak',
+          description: "",
+          section: "Hikes",handler: () => {
+              window.location.href = "/hikes/salbitschijenbiwak/salbitschijenbiwak/";
             },},{id: "hikes-wissberg",
           title: 'Wissberg',
           description: "",
