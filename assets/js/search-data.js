@@ -458,6 +458,11 @@ ninja.data = [{
           description: "",
           section: "Hikes",handler: () => {
               window.location.href = "/hikes/engelberger-lucke-rotstock/engelberger-lucke-rotstock/";
+            },},{id: "hikes-gfellen-mittaggupfi-pilatus",
+          title: 'Gfellen Mittaggupfi Pilatus',
+          description: "",
+          section: "Hikes",handler: () => {
+              window.location.href = "/hikes/gfellen-mittaggupfi-pilatus/gfellen-mittaggupfi-pilatus/";
             },},{id: "news-a-simple-inline-announcement",
           title: 'A simple inline announcement.',
           description: "",
