@@ -2,47 +2,55 @@
 <div id="hikes-overview-map" class="hikes-overview-map"></div>
 <p class="hikes-hint">
   <i class="fa-solid fa-hand-pointer"></i>
-  Click a marker on the map to jump to that hike.
+  Click a marker on the map to jump to that hike. Routes are shown in blue.
 </p>
 
-{% assign sorted_hikes = site.hikes | sort: "date" | reverse %}
+{% assign sorted_hikes = site.hikes | sort: 'date' | reverse %}
 
 <h2 class="hikes-section-title">Hikes (chronological)</h2>
 
 <div class="hikes-list">
   {% for hike in sorted_hikes %}
     {% assign slug = hike.slug %}
-    {% assign gpx_path = '/assets/hikes/' | append: slug | append: '/route.gpx' %}
-    {% assign photo_prefix = '/assets/img/hikes/' | append: slug | append: '/' %}
-    {% assign all_static = site.static_files | where_exp: "f", "f.path contains photo_prefix" %}
-    {% assign photos = all_static | where_exp: "f", "f.extname == '.jpg' or f.extname == '.jpeg' or f.extname == '.png'" | sort: "path" %}
+    {% assign asset_prefix = '_hikes/' | append: slug | append: '/' %}
+    {% assign asset_url = '/hikes/' | append: slug | append: '/' %}
+    {% assign hike_files = site.static_files | where_exp: 'f', 'f.path contains asset_prefix' %}
+    {% assign gpx_files = hike_files | where_exp: 'f', "f.extname == '.gpx' or f.extname == '.GPX'" %}
+    {% assign gpx = gpx_files | first %}
+    {% assign photos = hike_files
+      | where_exp: 'f',
+        "f.extname == '.jpg' or f.extname == '.jpeg' or f.extname == '.png' or f.extname == '.JPG' or f.extname == '.JPEG' or f.extname == '.PNG'"
+      | sort: 'path'
+    %}
 
     <article
       class="hike-entry"
       id="hike-{{ slug }}"
       data-slug="{{ slug }}"
       data-name="{{ hike.name | escape }}"
-      data-gpx="{{ gpx_path | relative_url }}"
+      data-gpx="{% if gpx %}{{ asset_url | append: gpx.name | relative_url }}{% endif %}"
     >
       <div class="hike-map" aria-label="Route map for {{ hike.name | escape }}"></div>
 
       <div class="hike-cover">
         {% if photos.size > 0 %}
+          {% assign cover_url = asset_url | append: photos[0].name %}
           <a
-            href="{{ photos[0].path | relative_url }}"
+            href="{{ cover_url | relative_url }}"
             data-lightbox="hike-{{ slug }}"
             data-title="{{ hike.name | escape }}"
             class="hike-cover-link"
           >
             <img
-              src="{{ photos[0].path | relative_url }}"
+              src="{{ cover_url | relative_url }}"
               alt="{{ hike.name | escape }}"
               loading="lazy"
-            />
+            >
           </a>
           {% for p in photos offset: 1 %}
+            {% assign photo_url = asset_url | append: p.name %}
             <a
-              href="{{ p.path | relative_url }}"
+              href="{{ photo_url | relative_url }}"
               data-lightbox="hike-{{ slug }}"
               data-title="{{ hike.name | escape }}"
               class="hike-cover-extra"
@@ -54,13 +62,26 @@
       <div class="hike-info">
         <h3 class="hike-name">{{ hike.name }}</h3>
         <dl class="hike-meta">
-          <dt>Date</dt><dd>{{ hike.date | date: "%Y-%m-%d" }}</dd>
-          <dt>Distance</dt><dd>{{ hike.total_distance }} km</dd>
-          <dt>Ascent</dt><dd>{{ hike.vertical_distance }} m</dd>
-          {% if hike.descent %}<dt>Descent</dt><dd>{{ hike.descent }} m</dd>{% endif %}
-          <dt>Difficulty</dt><dd>{{ hike.technical_difficulty }}</dd>
-          {% if hike.start %}<dt>Start</dt><dd>{{ hike.start }}</dd>{% endif %}
-          {% if hike.end %}<dt>End</dt><dd>{{ hike.end }}</dd>{% endif %}
+          <dt>Date</dt>
+          <dd>{{ hike.date | date: '%Y-%m-%d' }}</dd>
+          <dt>Distance</dt>
+          <dd>{{ hike.total_distance }} km</dd>
+          <dt>Ascent</dt>
+          <dd>{{ hike.vertical_distance }} m</dd>
+          {% if hike.descent %}
+            <dt>Descent</dt>
+            <dd>{{ hike.descent }} m</dd>
+          {% endif %}
+          <dt>Difficulty</dt>
+          <dd>{{ hike.technical_difficulty }}</dd>
+          {% if hike.start %}
+            <dt>Start</dt>
+            <dd>{{ hike.start }}</dd>
+          {% endif %}
+          {% if hike.end %}
+            <dt>End</dt>
+            <dd>{{ hike.end }}</dd>
+          {% endif %}
           <dt>Rating</dt>
           <dd
             class="hike-rating"
@@ -68,10 +89,11 @@
             style="--rating-pct: {{ hike.rating | times: 20 }}%;"
           ></dd>
         </dl>
-        <a class="hike-gpx-download" href="{{ gpx_path | relative_url }}" download>
-          <i class="fa-solid fa-download"></i> Download GPX
-        </a>
-        {% if hike.comment and hike.comment != "" %}
+        {% if gpx %}
+          {% assign gpx_url = asset_url | append: gpx.name %}
+          <a class="hike-gpx-download" href="{{ gpx_url | relative_url }}" download> <i class="fa-solid fa-download"></i> Download GPX </a>
+        {% endif %}
+        {% if hike.comment and hike.comment != '' %}
           <div class="hike-comment">{{ hike.comment | markdownify }}</div>
         {% endif %}
       </div>
@@ -80,22 +102,25 @@
 </div>
 
 <p class="hikes-disclaimer">
-  These pages are a personal logbook. Routes, distances, difficulty ratings, and
-  conditions reflect a single trip on a single day; they are not a guide. Verify
-  conditions, your own fitness and equipment, and follow official signage. I take
-  no responsibility for accidents or for any inaccuracy in the information shown
-  here.
+  These pages are a personal logbook. Routes, distances, difficulty ratings, and conditions reflect a single trip on a single day; they are not a
+  guide. Verify conditions, your own fitness and equipment, and follow official signage. I take no responsibility for accidents or for any inaccuracy
+  in the information shown here.
 </p>
 
 <!-- Data island consumed by assets/js/hikes.js -->
 <script id="hikes-data" type="application/json">
-[
-  {% for hike in sorted_hikes %}
-    {
-      "slug": {{ hike.slug | jsonify }},
-      "name": {{ hike.name | jsonify }},
-      "gpx": {{ '/assets/hikes/' | append: hike.slug | append: '/route.gpx' | relative_url | jsonify }}
-    }{% unless forloop.last %},{% endunless %}
-  {% endfor %}
-]
+  [
+    {% for hike in sorted_hikes %}
+      {% assign asset_prefix = '_hikes/' | append: hike.slug | append: '/' %}
+      {% assign asset_url = '/hikes/' | append: hike.slug | append: '/' %}
+      {% assign hike_files = site.static_files | where_exp: "f", "f.path contains asset_prefix" %}
+      {% assign gpx_files = hike_files | where_exp: "f", "f.extname == '.gpx' or f.extname == '.GPX'" %}
+      {% assign gpx = gpx_files | first %}
+      {
+        "slug": {{ hike.slug | jsonify }},
+        "name": {{ hike.name | jsonify }},
+        "gpx": {% if gpx %}{{ asset_url | append: gpx.name | relative_url | jsonify }}{% else %}null{% endif %}
+      }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ]
 </script>

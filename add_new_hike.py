@@ -5,9 +5,9 @@ Run from the repo root:
 
     python add_new_hike.py
 
-Prompts for the hike's metadata, creates `_hikes/<slug>.md` with that
-metadata as YAML frontmatter, and creates the empty asset folders the
-user then drops their GPX file (as `route.gpx`) and JPG photos into.
+Prompts for the hike's metadata and creates `_hikes/<slug>/<slug>.md` with
+that metadata as YAML frontmatter. The user then drops their one GPX file
+(using any filename) and photos into that same directory.
 """
 
 from __future__ import annotations
@@ -20,8 +20,6 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent
 HIKES_DIR = REPO_ROOT / "_hikes"
-GPX_DIR_TEMPLATE = REPO_ROOT / "assets" / "hikes" / "{slug}"
-IMG_DIR_TEMPLATE = REPO_ROOT / "assets" / "img" / "hikes" / "{slug}"
 
 
 def slugify(value: str) -> str:
@@ -129,7 +127,8 @@ def main() -> int:
         )
         return 1
 
-    md_path = HIKES_DIR / f"{slug}.md"
+    hike_dir = HIKES_DIR / slug
+    md_path = hike_dir / f"{slug}.md"
     if md_path.exists():
         answer = input(
             f"  '{md_path.relative_to(REPO_ROOT)}' already exists. Overwrite? [y/N]: "
@@ -167,23 +166,16 @@ def main() -> int:
         "comment": comment,
     }
 
-    HIKES_DIR.mkdir(parents=True, exist_ok=True)
+    hike_dir.mkdir(parents=True, exist_ok=True)
     write_markdown(md_path, fields)
-
-    gpx_dir = Path(str(GPX_DIR_TEMPLATE).format(slug=slug))
-    img_dir = Path(str(IMG_DIR_TEMPLATE).format(slug=slug))
-    gpx_dir.mkdir(parents=True, exist_ok=True)
-    img_dir.mkdir(parents=True, exist_ok=True)
 
     print()
     print(f"Created: {md_path.relative_to(REPO_ROOT)}")
-    print(f"Created: {gpx_dir.relative_to(REPO_ROOT)}/")
-    print(f"Created: {img_dir.relative_to(REPO_ROOT)}/")
     print()
     print("Next steps:")
-    print(f"  1. Drop your GPX file in '{gpx_dir.relative_to(REPO_ROOT)}/'")
-    print("     and rename it to 'route.gpx'.")
-    print(f"  2. Drop your JPG photos in '{img_dir.relative_to(REPO_ROOT)}/'.")
+    print(f"  1. Drop your one GPX file in '{hike_dir.relative_to(REPO_ROOT)}/'.")
+    print("     It can keep its original filename (the .gpx suffix is required).")
+    print(f"  2. Drop your JPG photos in that same folder.")
     print(
         "     Name them so they sort the way you want them displayed "
         "(e.g. '01.jpg', '02.jpg'). The first one is the cover."

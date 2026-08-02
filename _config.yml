@@ -162,7 +162,8 @@ collections:
   teachings:
     output: true
   hikes:
-    output: false
+    # Static files inside a collection are only published when output is enabled.
+    output: true
 
 # -----------------------------------------------------------------------------
 # Jekyll settings

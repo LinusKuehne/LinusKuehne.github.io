@@ -1,12 +1,12 @@
-/* Hiking page: per-hike mini maps + overview map of all hike start points.
+/* Hiking page: per-hike mini maps + overview map of all routes/start points.
  *
  * Reads the JSON island #hikes-data, fetches each hike's GPX, parses only
  * <trkpt lat lon> elements (waypoints intentionally ignored), then draws:
  *   - one polyline per hike inside its .hike-map div
- *   - one circle-marker per hike on #hikes-overview-map, popup linking to the entry
+ *   - every route and one clickable start marker on #hikes-overview-map
  *
  * Routes are fetched once per hike and reused for both the mini map and the
- * overview marker location (first trkpt).
+ * overview route and marker location (first trkpt).
  */
 
 (function () {
@@ -14,17 +14,16 @@
 
   // Swisstopo topographic basemap + official hiking-trail overlay (no API key
   // needed, see https://api3.geo.admin.ch/services/sdiservices.html).
-  const BASE_TILE_URL =
-    "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg";
-  const HIKING_OVERLAY_URL =
-    "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.swisstlm3d-wanderwege/default/current/3857/{z}/{x}/{y}.png";
-  const TILE_ATTR =
-    '&copy; <a href="https://www.swisstopo.admin.ch/" target="_blank" rel="noopener">swisstopo</a>';
+  const BASE_TILE_URL = "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg";
+  const HIKING_OVERLAY_URL = "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.swisstlm3d-wanderwege/default/current/3857/{z}/{x}/{y}.png";
+  const TILE_ATTR = '&copy; <a href="https://www.swisstopo.admin.ch/" target="_blank" rel="noopener">swisstopo</a>';
   const TILE_MAX_ZOOM = 18;
   const POLYLINE_COLOR = "#1f6feb";
   const POLYLINE_WEIGHT = 5;
   const POLYLINE_CASING_COLOR = "#ffffff";
   const POLYLINE_CASING_WEIGHT = 9;
+  const OVERVIEW_POLYLINE_WEIGHT = 2.5;
+  const OVERVIEW_POLYLINE_CASING_WEIGHT = 4.5;
   const MARKER_FILL = "#e91e63";
   const MARKER_STROKE = "#ffffff";
   const MARKER_RADIUS = 10;
@@ -87,8 +86,27 @@
     addTileLayers(map);
 
     const markers = [];
+    const overviewLines = [];
     hikes.forEach((h) => {
-      if (!h.start) return;
+      if (!h.track || h.track.length === 0) return;
+      const casing = L.polyline(h.track, {
+        color: POLYLINE_CASING_COLOR,
+        weight: OVERVIEW_POLYLINE_CASING_WEIGHT,
+        opacity: 0.75,
+        lineCap: "round",
+        lineJoin: "round",
+        interactive: false,
+      }).addTo(map);
+      const line = L.polyline(h.track, {
+        color: POLYLINE_COLOR,
+        weight: OVERVIEW_POLYLINE_WEIGHT,
+        opacity: 0.95,
+        lineCap: "round",
+        lineJoin: "round",
+        interactive: false,
+      }).addTo(map);
+      overviewLines.push({ casing, line });
+
       const marker = L.circleMarker(h.start, {
         radius: MARKER_RADIUS,
         color: MARKER_STROKE,
@@ -99,9 +117,7 @@
       }).addTo(map);
       const safeName = document.createElement("div");
       safeName.textContent = h.name;
-      marker.bindPopup(
-        '<a href="#hike-' + h.slug + '">' + safeName.innerHTML + "</a>",
-      );
+      marker.bindPopup('<a href="#hike-' + h.slug + '">' + safeName.innerHTML + "</a>");
       marker.on("click", () => {
         const entry = document.getElementById("hike-" + h.slug);
         if (entry) {
@@ -112,18 +128,35 @@
       markers.push(marker);
     });
 
+    function updateRouteWeights() {
+      const zoomBoost = Math.max(0, Math.min(2, (map.getZoom() - 8) * 0.5));
+      overviewLines.forEach(({ casing, line }) => {
+        line.setStyle({ weight: OVERVIEW_POLYLINE_WEIGHT + zoomBoost });
+        casing.setStyle({
+          weight: OVERVIEW_POLYLINE_CASING_WEIGHT + zoomBoost * 1.5,
+        });
+      });
+    }
+    map.on("zoomend", updateRouteWeights);
+
     if (markers.length === 0) {
       // No hikes yet — show a sensible default view of Switzerland.
       map.setView([46.8, 8.2], 7);
     } else if (markers.length === 1) {
       map.setView(markers[0].getLatLng(), 11);
     } else {
-      const group = L.featureGroup(markers);
+      const routeLines = overviewLines.map(({ line }) => line);
+      const group = L.featureGroup([...markers, ...routeLines]);
       map.fitBounds(group.getBounds(), { padding: [30, 30] });
     }
+    updateRouteWeights();
   }
 
   function loadHike(hike) {
+    if (!hike.gpx) {
+      console.warn("No GPX file found for hike:", hike.slug);
+      return Promise.resolve({ ...hike, track: [], start: null });
+    }
     return fetch(hike.gpx)
       .then((r) => {
         if (!r.ok) throw new Error("Failed to fetch " + hike.gpx);
@@ -131,17 +164,19 @@
       })
       .then((text) => {
         const track = parseGpxTrack(text);
-        const container = document.querySelector(
-          '.hike-entry[data-slug="' + hike.slug + '"] .hike-map',
-        );
+        const container = document.querySelector('.hike-entry[data-slug="' + hike.slug + '"] .hike-map');
         if (container && track.length > 0) {
           renderMiniMap(container, track);
         }
-        return { ...hike, start: track.length > 0 ? track[0] : null };
+        return {
+          ...hike,
+          track,
+          start: track.length > 0 ? track[0] : null,
+        };
       })
       .catch((err) => {
         console.error("Hike load failed:", hike.slug, err);
-        return { ...hike, start: null };
+        return { ...hike, track: [], start: null };
       });
   }
 
