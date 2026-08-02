@@ -402,62 +402,62 @@ ninja.data = [{
           title: 'Wissberg',
           description: "",
           section: "Hikes",handler: () => {
-              window.location.href = "/hikes/wissberg/";
+              window.location.href = "/hikes/wissberg/wissberg/";
             },},{id: "hikes-quinten",
           title: 'Quinten',
           description: "",
           section: "Hikes",handler: () => {
-              window.location.href = "/hikes/quinten/";
+              window.location.href = "/hikes/quinten/quinten/";
             },},{id: "hikes-speer",
           title: 'Speer',
           description: "",
           section: "Hikes",handler: () => {
-              window.location.href = "/hikes/speer/";
+              window.location.href = "/hikes/speer/speer/";
             },},{id: "hikes-druesberg",
           title: 'Druesberg',
           description: "",
           section: "Hikes",handler: () => {
-              window.location.href = "/hikes/druesberg/";
+              window.location.href = "/hikes/druesberg/druesberg/";
             },},{id: "hikes-frumsel-brisi",
           title: 'Frumsel Brisi',
           description: "",
           section: "Hikes",handler: () => {
-              window.location.href = "/hikes/frumsel-brisi/";
+              window.location.href = "/hikes/frumsel-brisi/frumsel-brisi/";
             },},{id: "hikes-monte-leone",
           title: 'Monte Leone',
           description: "",
           section: "Hikes",handler: () => {
-              window.location.href = "/hikes/monte-leone/";
+              window.location.href = "/hikes/monte-leone/monte-leone/";
             },},{id: "hikes-monte-boglia",
           title: 'Monte Boglia',
           description: "",
           section: "Hikes",handler: () => {
-              window.location.href = "/hikes/monte-boglia/";
+              window.location.href = "/hikes/monte-boglia/monte-boglia/";
             },},{id: "hikes-sattel-goldau",
           title: 'Sattel Goldau',
           description: "",
           section: "Hikes",handler: () => {
-              window.location.href = "/hikes/sattel-goldau/";
+              window.location.href = "/hikes/sattel-goldau/sattel-goldau/";
             },},{id: "hikes-rageflueli-and-huenerhubel",
           title: 'Rageflueli And Huenerhubel',
           description: "",
           section: "Hikes",handler: () => {
-              window.location.href = "/hikes/rageflueli-and-huenerhubel/";
+              window.location.href = "/hikes/rageflueli-and-huenerhubel/rageflueli-and-huenerhubel/";
             },},{id: "hikes-rophaien",
           title: 'Rophaien',
           description: "",
           section: "Hikes",handler: () => {
-              window.location.href = "/hikes/rophaien/";
+              window.location.href = "/hikes/rophaien/rophaien/";
             },},{id: "hikes-spannorthutte",
           title: 'Spannorthutte',
           description: "",
           section: "Hikes",handler: () => {
-              window.location.href = "/hikes/spannorthutte/";
+              window.location.href = "/hikes/spannorthutte/spannorthutte/";
             },},{id: "hikes-engelberger-lucke-rotstock",
           title: 'Engelberger Lucke Rotstock',
           description: "",
           section: "Hikes",handler: () => {
-              window.location.href = "/hikes/engelberger-lucke-rotstock/";
+              window.location.href = "/hikes/engelberger-lucke-rotstock/engelberger-lucke-rotstock/";
             },},{id: "news-a-simple-inline-announcement",
           title: 'A simple inline announcement.',
           description: "",
