@@ -468,6 +468,11 @@ ninja.data = [{
           description: "",
           section: "Hikes",handler: () => {
               window.location.href = "/hikes/gfellen-mittaggupfi-pilatus/gfellen-mittaggupfi-pilatus/";
+            },},{id: "hikes-surenenpass",
+          title: 'Surenenpass',
+          description: "",
+          section: "Hikes",handler: () => {
+              window.location.href = "/hikes/surenenpass/surenenpass/";
             },},{id: "news-a-simple-inline-announcement",
           title: 'A simple inline announcement.',
           description: "",
